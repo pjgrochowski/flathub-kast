@@ -4,11 +4,6 @@ runtime: org.kde.Platform
 runtime-version: '6.8'
 sdk: org.kde.Sdk
 
-# TODO: Fix remaining issues:
-# - Media server cannot support range downloads since flatpak breaks that! (Possibly session problem.)
-# - Application cannot have access to '/tmp' since flathub does not allow that! (Unfortunately sandbox tmp seams to be too small! Maybe it should be configurable?)
-# - Taskbar status requires full desktop file name! (It's a problem since flatpak requires reverse-dns style name!)
-
 command: kast
 finish-args:
   - --share=ipc
@@ -20,11 +15,11 @@ finish-args:
 #  - --socket=fallback-x11
 #  - --socket=wayland
   - --device=dri
-  - --filesystem=home:r
-  - --filesystem=/tmp:rw
+  # Provide alternative temporary storage:
+  - --filesystem=~/.tmp:create
   # MPRIS support via D-Bus:
   - --own-name=org.mpris.MediaPlayer2.Kast.*
-  # Taskbar status status support via D-Bus: # TODO: Make it work!
+  # Taskbar status status support via D-Bus:
   - --talk-name=com.canonical.Unity.LauncherEntry
 modules:
 
