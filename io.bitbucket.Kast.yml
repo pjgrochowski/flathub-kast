@@ -4,7 +4,7 @@ runtime: org.kde.Platform
 runtime-version: '6.8'
 sdk: org.kde.Sdk
 
-command: kast
+command: launcher.sh
 finish-args:
   - --share=ipc
   - --share=network
@@ -31,6 +31,7 @@ modules:
       - mv -fv /app/unpack/opt/kast/kast.dist /app/opt/kast
       - ln -sf /app/opt/kast/kast.bin /app/bin/kast
     post-install:
+      - install -Dm 744 launcher.sh /app/bin
       - install -Dm644 assets/io.bitbucket.Kast.desktop -t /app/share/applications
       - install -Dm644 assets/io.bitbucket.Kast.png -t /app/share/icons/hicolor/512x512/apps
       - install -Dm644 assets/io.bitbucket.Kast.metainfo.xml -t /app/share/metainfo
@@ -42,6 +43,8 @@ modules:
         dest-filename: setup_kast.bash
         url: https://bitbucket.org/massultidev/kast/downloads/setup_kast_1.4.1_x86_64.bash
         sha256: 096bbf87982df0f84a7de435ea525090cd9c2704e91512ed18b4f35ac3852050
+      - type: file
+        path: launcher.sh
       - type: file
         path: io.bitbucket.Kast.metainfo.xml
         dest: assets
