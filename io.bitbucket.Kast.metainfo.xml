@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+    <id>io.bitbucket.Kast</id>
+
+    <name>Kast</name>
+    <url type="homepage">https://bitbucket.org/massultidev/kast</url>
+    <summary>Cast videos (with subtitles) straight from your PC</summary>
+    <icon type="stock">io.bitbucket.Kast</icon>
+
+    <developer id="org.bitbucket.massultidev">
+        <name>P.J. Grochowski</name>
+    </developer>
+
+    <metadata_license>MIT</metadata_license>
+    <project_license>MIT</project_license>
+
+    <description>
+        <p>
+            Seamlessly cast your local video files to chromecast type devices. Regardless of media containers, codecs or subtitle formats.
+        </p>
+    </description>
+
+    <categories>
+        <category>AudioVideo</category>
+    </categories>
+
+    <releases>
+        <release version="1.4.1" date="2024-10-22"><description/></release>
+    </releases>
+
+    <content_rating type="oars-1.1" />
+
+    <launchable type="desktop-id">io.bitbucket.Kast.desktop</launchable>
+</component>

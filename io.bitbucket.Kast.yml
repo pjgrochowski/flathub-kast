@@ -1,0 +1,66 @@
+id: io.bitbucket.Kast
+
+runtime: org.kde.Platform
+runtime-version: '6.8'
+sdk: org.kde.Sdk
+
+# TODO: Fix remaining issues:
+# - Media server cannot support range downloads since flatpak breaks that! (Possibly session problem.)
+# - Application cannot have access to '/tmp' since flathub does not allow that! (Unfortunately sandbox tmp seams to be too small! Maybe it should be configurable?)
+# - Taskbar status requires full desktop file name! (It's a problem since flatpak requires reverse-dns style name!)
+
+command: kast
+finish-args:
+  - --share=ipc
+  - --share=network
+  - --socket=pulseaudio
+  # TODO: Remove that after PyQt6 migration:
+  - --socket=x11
+  # TODO: Uncomment that after PyQt6 migration:
+#  - --socket=fallback-x11
+#  - --socket=wayland
+  - --device=dri
+  - --filesystem=home:r
+  - --filesystem=/tmp:rw
+  # MPRIS support via D-Bus:
+  - --own-name=org.mpris.MediaPlayer2.Kast.*
+  # Taskbar status status support via D-Bus: # TODO: Make it work!
+  - --talk-name=com.canonical.Unity.LauncherEntry
+modules:
+
+  - name: Kast
+    buildsystem: simple
+    build-commands:
+      - mkdir -pv /app/opt /app/bin /app/unpack
+      - bash setup_kast.bash -r /app/unpack
+      - mv -fv /app/unpack/opt/kast/kast.dist /app/opt/kast
+      - ln -sf /app/opt/kast/kast.bin /app/bin/kast
+    post-install:
+      - install -Dm644 assets/io.bitbucket.Kast.desktop -t /app/share/applications
+      - install -Dm644 assets/io.bitbucket.Kast.png -t /app/share/icons/hicolor/512x512/apps
+      - install -Dm644 assets/io.bitbucket.Kast.metainfo.xml -t /app/share/metainfo
+    cleanup:
+      # Removes '/app/unpack':
+      - /unpack
+    sources:
+      - type: file
+        dest-filename: setup_kast.bash
+        url: https://bitbucket.org/massultidev/kast/downloads/setup_kast_1.4.1_x86_64.bash
+        sha256: 096bbf87982df0f84a7de435ea525090cd9c2704e91512ed18b4f35ac3852050
+      - type: file
+        path: io.bitbucket.Kast.metainfo.xml
+        dest: assets
+      - type: file
+        path: io.bitbucket.Kast.desktop
+        dest: assets
+      - type: file
+        path: io.bitbucket.Kast.png
+        dest: assets
+
+  # Missing PyQt5 dependency:
+  - name: kerberos
+    subdir: src
+    sources:
+      - type: archive
+        url: https://kerberos.org/dist/krb5/1.21/krb5-1.21.tar.gz
+        sha256: 69f8aaff85484832df67a4bbacd99b9259bd95aab8c651fbbe65cdc9620ea93b

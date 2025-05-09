@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=Kast
+Icon=io.bitbucket.Kast
+Exec=kast
+Categories=AudioVideo;
+Terminal=false
