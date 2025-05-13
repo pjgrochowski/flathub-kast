@@ -7,7 +7,7 @@ make setup # Only needs to be run once.
 
 ## Build:
 ```bash
-make clean build
+make clean release
 ```
 
 ## Run:

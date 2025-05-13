@@ -1,9 +1,29 @@
-APPLICATION_ID := io.bitbucket.Kast
-APPLICATION_MANIFEST := $(APPLICATION_ID).yml
-APPLICATION_METAINFO := $(APPLICATION_ID).metainfo.xml
+MAKEFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
+DIR_MAKEFILE := $(dir $(MAKEFILE_PATH))
 
-DIR_BUILD := builddir
-DIR_REPO := repo
+APPLICATION_ID := io.bitbucket.Kast
+APPLICATION_MANIFEST := $(DIR_MAKEFILE)/$(APPLICATION_ID).yml
+APPLICATION_METAINFO := $(DIR_MAKEFILE)/$(APPLICATION_ID).metainfo.xml
+
+DIR_BUILD := $(DIR_MAKEFILE)/builddir
+DIR_REPO := $(DIR_MAKEFILE)/repo
+
+define func_build
+	$(eval $@_IS_SANDBOXED = $(1))
+	$(eval $@_SANDBOX_PARAM = $(intcmp $($@_IS_SANDBOXED), 0, , , --sandbox))
+
+	flatpak run org.flatpak.Builder \
+		--force-clean \
+		$($@_SANDBOX_PARAM) \
+		--user \
+		--install \
+		--install-deps-from=flathub \
+		--ccache \
+		--mirror-screenshots-url=https://dl.flathub.org/media/ \
+		--repo=$(DIR_REPO) \
+		$(DIR_BUILD) \
+		$(APPLICATION_MANIFEST)
+endef
 
 # That needs to run only once:
 setup:
@@ -16,18 +36,11 @@ clean:
 uninstall:
 	flatpak uninstall $(APPLICATION_ID)
 
-build:
-	flatpak run org.flatpak.Builder \
-		--force-clean \
-		--sandbox \
-		--user \
-		--install \
-		--install-deps-from=flathub \
-		--ccache \
-		--mirror-screenshots-url=https://dl.flathub.org/media/ \
-		--repo=$(DIR_REPO) \
-		$(DIR_BUILD) \
-		$(APPLICATION_MANIFEST)
+release:
+	$(call func_build, 1)
+
+develop:
+	$(call func_build, 0)
 
 validate: validate-manifest validate-repo validate-metainfo
 
