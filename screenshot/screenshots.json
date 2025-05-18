@@ -1,0 +1,35 @@
+[
+  {
+    "default": true,
+    "fileName": "img-1.png",
+    "caption": "Idle"
+  },
+  {
+    "fileName": "img-2.png",
+    "caption": "Searching for cast devices"
+  },
+  {
+    "fileName": "img-3.png",
+    "caption": "Cast device and video file have been selected"
+  },
+  {
+    "fileName": "img-4.png",
+    "caption": "Popup about required video processing"
+  },
+  {
+    "fileName": "img-5.png",
+    "caption": "Progress during video processing"
+  },
+  {
+    "fileName": "img-6.png",
+    "caption": "Media processed and ready for streaming"
+  },
+  {
+    "fileName": "img-7.png",
+    "caption": "Connecting to cast device"
+  },
+  {
+    "fileName": "img-8.png",
+    "caption": "Local preview of streamed video"
+  }
+]
